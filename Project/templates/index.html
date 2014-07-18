@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+    {% if error %}
+        <h2> {{ error }} </h2>
+    {% else %}    
+        <form method="POST" action="/search">
+            <h2 class="search-form">Search</h2>
+
+                <p><button type="btn btn-lg btn-primary btn-block" type="submit">Submit</button></p>   
+            <p></p>
+        </form>
+<script>
+</script>
+    {% endif %}
+</html>
+{% endblock %}

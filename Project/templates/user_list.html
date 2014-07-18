@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+<h2>List of All Users:</h2>
+    <p><a href="/movies_list/{{session['user']}}">User {{ session['user'] }}</a></p>
+{% for user in users %}
+    <p><a href="/movies_list/{{user.id}}">User {{ user.id }}</a></p>
+{% endfor %}
+</html>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   <head>
+   </head>
+   <body>
+      <form method="POST" action="/additionalinfo">
+         <h2 class="additional-info">Additional Info</h2>
+         <br>
+         <div class="mentoree-select-group">
+            <label class="mentoree-label" for="radios">1. Are you a Mentor or Mentee?</label>
+            <div class="mentoree">
+               <label class="radio" for="radios-0">
+               <input type="radio" name="mentoree-radios" id="radios-0" value="1" checked="checked">
+               Mentor
+               </label>
+               <label class="radio" for="radios-1">
+               <input type="radio" name="mentoree-radios" id="radios-1" value="0">
+               Mentee
+               </label>
+            </div>
+         </div>
+         </br>
+         <div class="age-group">
+            <label class="control-label" for="agerange">2. Age Range</label>
+            <div class="controls">
+               <select id="agerange" name="agerange" class="input-xlarge">
+                  <option>Sprouts</option>
+                  <option>Teens</option>
+                  <option>20's</option>
+                  <option>30's</option>
+                  <option>40's</option>
+                  <option>50's</option>
+                  <option>60's</option>
+                  <option>70's</option>
+                  <option>I am wiser than you think</option>
+               </select>
+            </div>
+         </div>
+         </br>
+         <div class="gender-group">
+            <label class="gender-label" for="radios">3. Gender</label>
+            <p><b>&nbsp;&nbsp;&nbsp;&nbsp;I can give advice with a ...:</b></p>
+            <div class="gender">
+               <label class="radio" for="radios-0">
+               <input type="radio" name="gender_radios" id="radios-0" value="feminine touch" checked="checked">
+               Feminine touch
+               </label>
+               <label class="radio" for="radios-1">
+               <input type="radio" name="gender_radios" id="radios-1" value="man point of view">
+               Man's point of view
+               </label>
+               <label class="radio" for="radios-0">
+               <input type="radio" name="gender_radios" id="radios-2" value="gender neutral">
+               Gender neutral point of view
+               </label>
+            </div>
+         </div>
+         <br>
+         <div class="description-group">
+            <label class="description-label" for="textarea">4. Mentors: Short Description of what you'd like to mentor on. 
+            </br>&nbsp;&nbsp;&nbsp;&nbsp;Mentees: Short Description of what you'd like mentoring on</label>
+            <div class="description">                     
+               <textarea id="textarea" name="description">Limit 500 characters</textarea>
+            </div>
+         </div>
+     </br>
+         </label>
+         <div class="control-group">
+            <div class="controls">
+               <button id="submit" name="submit" class="btn btn-primary">Submit</button>
+            </div>
+         </div>
+      </form>
+      <script>
+      $('.nav-tabs').hide()
+      </script>
+   </body>
+</html>
+{% endblock %}

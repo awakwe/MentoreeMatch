@@ -1,0 +1,61 @@
+<html>
+   <head>
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="/static/css/style.css" />
+      <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+      <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.js"></script>
+   </head>
+   <body>
+      <div class="navbar navbar-inverse navbar-static-top">
+         <div class="container">
+            <div class="navbar-header">
+               <img src="/static/img/mentor.gif" HEIGHT="50" WIDTH="50"><a class="navbar-brand" href="/">Mentoree Match</a>
+            </div>
+            <div class="navbar-collapse collapse">
+               <ul class="nav navbar-nav navbar-right">
+                  {% if session.get('linkedin_id') %}
+                  <li><a href="/login">Log Out</a></li>
+                  {% else %}
+                  <li><a href="/create_newuser">Sign Up</a></li>
+                  <li><a href="/login">Log In</a></li>
+                  {% endif %}
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class = "nav-tabs">
+      <ul class="nav nav-tabs" id="myTab">
+         <li class="active"><a href="#home">Home</a></li>
+         <li><a href="#profile">Profile</a></li>
+         <li><a href="#messages">Messages</a></li>
+         <li><a href="#settings">Settings</a></li>
+      </ul>
+      <div class="tab-content">
+         <div class="tab-pane active" id="home">home</div>
+         <div class="tab-pane" id="profile">profile</div>
+         <div class="tab-pane" id="messages">messages</div>
+         <div class="tab-pane" id="settings">settings</div>
+      </div>
+  </div>
+      <div class="container">
+         {% with messages = get_flashed_messages() %}
+         {% if messages %}
+         {% for message in messages %}
+         <ul class="flashes">
+            <li>{{message}}</li>
+         </ul>
+         {% endfor %}
+         {% endif %}
+         {% endwith %}
+         {% block body %}{% endblock %}
+      </div>
+      <script>
+         $('#myTab a').click(function (e) {
+             e.preventDefault();
+             console.log(this)
+             $(this).tab('show');
+         })
+      </script>
+   </body>
+</html>
