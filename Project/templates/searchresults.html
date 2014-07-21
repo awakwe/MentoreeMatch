@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   {% if error %}
+   <h2> {{ error }} </h2>
+   {% else %}    
+
+{% for mentors in mentor_data %}
+    <p>Mentor Name:{{mentors.first_name}}</p>
+    <p>Mentor Industry: {{mentors.industry}}</p>
+{% endfor %}
+
+   <script></script>
+   {% endif %}
+</html>
+{% endblock %}
