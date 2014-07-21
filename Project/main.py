@@ -2,6 +2,7 @@ from flask_oauthlib.client import OAuth
 from flask import Flask, render_template, redirect, jsonify, request, flash, url_for, session
 import jinja2
 import tabledef
+import search
 from tabledef import User, MentoreeTopic, Topic
 import linkedin
 from xml.dom.minidom import parseString
@@ -42,8 +43,9 @@ def addinfo():
     age_range = request.form.get('agerange')
     gender_input = request.form.get('gender_radios')
     description_input = request.form.get('description')
-    
-    linkedin.save_additional_user_data(mentoree_choice, age_range, gender_input, description_input)
+    mentor_topics = request.form.getlist('mentortopics')
+
+    linkedin.save_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics)
     # current_user = tabledef.dbsession.query(tabledef.User).filter_by(linkedintoken=session['linkedin_token']).first()
     return redirect(url_for('index'))
 
@@ -76,7 +78,16 @@ def get_linkedin_data(resp):
 
     return redirect(url_for('index'))
 
-# @app.route('/search_results')
+@app.route('/', methods=["POST"])
+def addinfo():
+    mentee_topic_choice = request.form.get('searchtopics')
+
+    mentor_data = search.search(mentee_topic_choice)
+    return render_template('searchresults.html', mentor_data=mentor_data)
+    # return redirect(url_for('search_results', mentor_data=mentor_data))
+
+# @app.route('/search_results', methods=["GET"])
 # def search_results():
-#     pass
-   
+#     mentor_data = request.args['mentor_data']
+#     return render_template('searchresults.html', mentor_data=mentor_data)
+#    

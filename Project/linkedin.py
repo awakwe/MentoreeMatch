@@ -64,13 +64,17 @@ def change_linkedin_query(uri, headers, body):
             uri += '?oauth2_access_token=' + auth
     return uri, headers, body
 
-def save_additional_user_data(mentoree_choice, age_range, gender_input, description_input):
+def save_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics):
     tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=session['linkedin_id']).update({
         'mentor': mentoree_choice,
         'age':age_range,
         'gender':gender_input,
         'description':description_input,
         'new_user':False})
+
+    for topics in mentor_topics:
+        mentor_selected_topics = tabledef.MentoreeTopic(topic_id = topics, mentor_id=session['linkedin_id'])
+        tabledef.dbsession.add(mentor_selected_topics)
     return tabledef.dbsession.commit()
 
 linkedin.pre_request = change_linkedin_query

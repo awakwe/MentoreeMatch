@@ -125,10 +125,9 @@ class User(Base):
 
 class MentoreeTopic(Base):
     __tablename__ = "mentoree_topics"
-    id = Column(Integer, primary_key = True, nullable=False)
+    id = Column(Integer, primary_key=True)
     topic_id = Column(Integer, ForeignKey('topics.topic_id'), nullable=True)
-    description = Column(String(500), nullable=True)
-    mentoree_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable=True)
+    mentor_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable=True)
 
 class Topic(Base):
     __tablename__ = "topics"
