@@ -79,11 +79,12 @@ def get_linkedin_data(resp):
     return redirect(url_for('index'))
 
 @app.route('/', methods=["POST"])
-def addinfo():
+def search_results():
     mentee_topic_choice = request.form.get('searchtopics')
 
     mentor_data = search.search(mentee_topic_choice)
-    return render_template('searchresults.html', mentor_data=mentor_data)
+    search_topic = search.search_topic_display(mentee_topic_choice)
+    return render_template('searchresults.html', mentor_data=mentor_data, search_topic_display=search_topic)
     # return redirect(url_for('search_results', mentor_data=mentor_data))
 
 # @app.route('/search_results', methods=["GET"])

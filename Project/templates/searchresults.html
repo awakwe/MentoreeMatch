@@ -3,10 +3,10 @@
 <html>
    {% if error %}
    <h2> {{ error }} </h2>
-   {% else %}    
+   {% else %}
    <div class="page-header">
                <h1>
-                  Search Results:
+                  Search Results <small>for {{search_topic_display}}</small>:
                </h1>
             </div>
    {% for mentors in mentor_data %}
