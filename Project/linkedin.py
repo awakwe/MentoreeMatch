@@ -38,14 +38,7 @@ def authorized(resp):
     linkedin_json_string = linkedin.get('people/~:(id,first-name,last-name,industry,headline,site-standard-profile-request,certifications,educations,summary,specialties,positions,picture-url,email-address)')
     session['linkedin_id'] = linkedin_json_string.data['id']
     
-    user = User()
-    user.import_linkedin_user(linkedin_json_string.data)
-    current_user_id = user.linkedin_id
-    # print "~~!!^_^!!~~"
-    existing_user = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id = current_user_id).first()
-    if existing_user == None:
-        tabledef.dbsession.add(user)
-        tabledef.dbsession.commit()
+    tabledef.import_linkedin_user(linkedin_json_string.data)
     return jsonify(linkedin_json_string.data)
 
 

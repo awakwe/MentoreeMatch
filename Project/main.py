@@ -10,7 +10,7 @@ from Project import app
 import json
 
 app.debug = True
-app.secret_key = 'development'
+app.secret_key = 'iLoveHelloKitty'
 
 # main is for rendering templates. call function and render,
 # post request will have topics ur looking for. send those topics as a parameter to search function. search function in search will do database query. 
@@ -27,12 +27,6 @@ def index():
         return render_template('index.html')
     return redirect(url_for('login'))
 
-# where i put most of my routes
-# @app.route('/search', method="POST")
-# def search():
-    # get response from request.form['age']
-    # getting the user input and sending it over to search.py
-    # pass
 @app.route('/additionalinfo', methods=["GET"])
 def addinfo_page():
     return render_template('additionalinfo.html')
@@ -68,12 +62,7 @@ def get_linkedin_data(resp):
 
     user = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=user_string["id"]).first()
     if user and user.new_user:
-        # change to false only after they added info
-        # user.new_user == False
-        #commit to db
-        # tabledef.dbsession.commit()
         return redirect(url_for('addinfo_page'))
-        # else:
     # print linkedin.authorize(callback=url_for('authorized', _external=True))
 
     return redirect(url_for('index'))
@@ -84,11 +73,18 @@ def search_results():
 
     mentor_data = search.search(mentee_topic_choice)
     search_topic = search.search_topic_display(mentee_topic_choice)
+    print "mentor_data[0].educations_field_of_study"
+    print mentor_data[0].ment_user.educations[0].educations_field_of_study
     return render_template('searchresults.html', mentor_data=mentor_data, search_topic_display=search_topic)
-    # return redirect(url_for('search_results', mentor_data=mentor_data))
 
 # @app.route('/search_results', methods=["GET"])
 # def search_results():
 #     mentor_data = request.args['mentor_data']
 #     return render_template('searchresults.html', mentor_data=mentor_data)
+
+
+@app.route('/mentor_detail/<linkedin_id>', methods=["GET"])
+def mentor_page(linkedin_id):
+    ment_data = search.mentor_detail_display(linkedin_id)
+    return render_template('mentor_detail.html', ment_data=ment_data)
 #    

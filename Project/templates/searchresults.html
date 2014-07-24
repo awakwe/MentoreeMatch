@@ -6,7 +6,7 @@
    {% else %}
    <div class="page-header">
                <h1>
-                  Search Results <small>for {{search_topic_display}}</small>:
+                  Search Results <small>for {{search_topic_display}}:</small>
                </h1>
             </div>
    {% for mentors in mentor_data %}
@@ -16,16 +16,22 @@
             <div class="panel panel-default">
                <div class="panel-heading">
                   <h3 class="panel-title">
-                     {{mentors.first_name}}&nbsp;{{mentors.last_name}}
+                     <a href="/mentor_detail/{{mentors.linkedin_id}}">{{mentors.ment_user.first_name}}&nbsp;{{mentors.ment_user.last_name}}</a>
                   </h3>
                </div>
                <div class="panel-body">
                   <div class="media">
-                     <a href="#" class="pull-left"><img src="{{mentors.picture_url}}" class="media-object" alt='' /></a>
+                     <a href="#" class="pull-left"><img src="{{mentors.ment_user.picture_url}}" class="media-object" alt='' /></a>
                      <div class="media-body">
-                        <p><b>Industry:&nbsp;</b>{{mentors.industry}}</p>
-                        <p><b>Field of Study:&nbsp;</b>{{mentors.educations_field_of_study}}</p>
-                        "{{mentors.description}}"
+                        <p><b>Industry:&nbsp;</b>{{mentors.ment_user.industry}}</p>
+                        {% if mentors.ment_user.educations|length > 0 %}
+                           <p><b>Field of Study:&nbsp;</b>
+                              {% for ed in mentors.ment_user.educations %}
+                                 {{ed.educations_field_of_study}},
+                              {% endfor %}
+                           </p>
+                        {% endif %}
+                        "{{mentors.ment_user.description}}"
                      </div>
                   </div>
                </div>
