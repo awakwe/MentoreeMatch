@@ -1,0 +1,126 @@
+
+
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   <head>
+   </head>
+   <body>
+      <form method="POST" action="/edit_profile">
+         <h2 class="edit-additional-info">Edit Additional Info</h2>
+         <br>
+         <div class="mentoree-select-group">
+            <label class="mentoree-label" for="radios">1. Are you a Mentor or Mentee?</label>
+            {% if ment_data.mentor == 1 %}
+            <p> You are currently a mentor</p>
+            {% else %}
+            <p> you are currently a mentee</p>
+            {% endif %}
+            <div class="mentoree">
+               <label class="radio" for="radios-0">
+                  <input type="radio" name="mentoree-radios" id="radios-0" value="1" {% if ment_data.mentor == 1 %} checked="checked"{% endif %} />
+                  Mentor
+               </label>
+               <label class="radio" for="radios-1">
+                  <input type="radio" name="mentoree-radios" id="radios-1" value="0" {% if ment_data.mentor == 0 %} checked="checked" {% endif %} />
+                  Mentee
+               </label>
+            </div>
+         </div>
+         </br>
+         <div class="age-group">
+            <label class="age-label" for="agerange">2. Age Range</label>
+            <p>(Current age range: {{ment_data.age}})</p>
+            <div class="age">
+               <select id="agerange" name="agerange" class="input-xlarge">
+                  <option>Sprouts</option>
+                  <option>Teens</option>
+                  <option>20's</option>
+                  <option>30's</option>
+                  <option>40's</option>
+                  <option>50's</option>
+                  <option>60's</option>
+                  <option>70's</option>
+                  <option>I am wiser than you think</option>
+               </select>
+            </div>
+         </div>
+         </br>
+         <div class="gender-group">
+            <label class="gender-label" for="radios">3. Gender</label>
+            <p><b>&nbsp;&nbsp;&nbsp;&nbsp;I can give advice with a ...:</b></p>
+            <div class="gender">
+               <label class="radio" for="radios-0">
+               <input type="radio" name="gender_radios" id="radios-0" value="feminine touch" checked="checked">
+               Feminine touch
+               </label>
+               <label class="radio" for="radios-1">
+               <input type="radio" name="gender_radios" id="radios-1" value="man point of view">
+               Man's point of view
+               </label>
+               <label class="radio" for="radios-0">
+               <input type="radio" name="gender_radios" id="radios-2" value="gender neutral">
+               Gender neutral point of view
+               </label>
+            </div>
+         </div>
+         <br>
+         <div class="description-group">
+            <label class="description-label" for="textarea">4. Mentors: Short Description of what you'd like to mentor on. 
+            </br>&nbsp;&nbsp;&nbsp;&nbsp;Mentees: Short Description of what you'd like mentoring on</label>
+            <div class="description">                     
+               <textarea id="textarea" name="description" style="width:90%">{{ment_data.description}}</textarea>
+            </div>
+         </div>
+         </br>
+         </label>
+         <div class="mentortopics-group">
+         <label class="mentortopics-label" for="mentortopics">5. If you are a mentor, what topics would you like to mentor on?</label>
+
+         <div class="mentortopics">
+            <div class = "row">
+               <div class = "col-md-4 form-group">
+                  {% for i in range(topics | length) %}
+                     {% if i > 0 and i%8 == 0 %}
+                     </div>
+                     <div class = "col-md-4 form-group">
+                     {% endif %}
+                  <label class="checkbox">
+                     
+                  <input type="checkbox" name="mentortopics" value="{{topics[i].topic_id}}" {% for mtopics in ment_pers_topics %}{% if topics[i].topic_id == mtopics.topic_id %}checked{% endif %}{% endfor %}>
+                  {{topics[i].title}}
+                  </label>
+                  {% endfor %}
+               </div>
+            </div>
+         </div>
+
+         <div class="mentortopics-group">
+            <div class="mentortopics">
+               <button id="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
+            </div>
+         </div>
+      </form>
+      <script>
+         $('.nav-tabs').hide();
+         
+         $("select option").each(function(){
+         if ($(this).text() == "{{ment_data.age|safe}}")
+            $(this).attr("selected","selected");
+         });
+         
+         var rbl = document.getElementsByName('gender_radios');
+         for (var i = 0; i < rbl.length; i++) {
+            if (rbl[i].value == '{{ment_data.gender|safe}}') {
+               rbl[i].checked = 'checked';
+               break;
+         }
+         };
+         
+         
+         
+      </script>
+   </body>
+</html>
+{% endblock %}
+

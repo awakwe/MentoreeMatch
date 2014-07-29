@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body class="">
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="static/img/water_sunset_blue_beach_silhouette_jumping_arms_raised_1680x1050_wallpaper_Wallpaper_2560x1600_www.wallpaperswa.com.jpg">
+              <div class="carousel-caption">
+                <h2>Make a Difference in Someone's Life</h2>
+                <p>Be a Mentor</p>
+                <a class="btn btn-primary btn-large" href="/home">Learn more</a>
+              </div>
+            </div>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+        <a class="btn btn-primary"
+        href="#">View details</a>
+      </div>
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <img src="http://placehold.it/1024x600" class="img-responsive">
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+        <a class="btn btn-primary"
+        href="#">View details</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+   <script>
+   $('.nav-tabs').hide()
+      $(document).ready(function (){
+         $("#myTab .active").removeClass("active");
+         $("#myTab .home").addClass("active");
+      });
+   </script>
+</html>
+{% endblock %}

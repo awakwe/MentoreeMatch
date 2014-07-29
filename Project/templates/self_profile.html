@@ -1,0 +1,155 @@
+
+
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   {% if error %}
+   <h2> {{ error }} </h2>
+   {% else %}
+   <div class="container">
+   <div class="row clearfix">
+   <div class="col-md-12 column">
+   <div class="page-header">
+      <h1>
+         {{ment_data.first_name}}&nbsp;{{ment_data.last_name}}'s&nbsp;<small>Profile page</small>
+      </h1>
+   </div>
+   <div class="row clearfix">
+      <div class="col-md-1 column">
+      </div>
+      <div class="col-md-2 brd">
+         <div class="center-block placeholder"><img alt="140x140" src="{{ment_data.picture_url}}"/></div>
+      </div>
+      <div class="col-md-4 column">
+         <blockquote>
+            <p style="font-size:17px"><b>Position:&nbsp;</b>
+               {% if ment_data.positions|length > 0 %}
+               {{ment_data.positions[0].positions_title}}
+               {% endif %}
+            </p>
+            <p style="font-size:17px"><b>Industry:&nbsp;</b>{{ment_data.industry}}</p>
+            <button type="button" class="btn btn-sm btn-default">Email Me!</button>
+         </blockquote>
+      </div>
+      <div class="col-md-5 column">
+         <blockquote>
+            <p style="font-size:17px"><b>Field of Study:&nbsp;</b>
+               {% if ment_data.educations|length > 0 %}
+               {{ment_data.educations[0].educations_field_of_study}}
+            </p>
+            <p style="font-size:17px"><b>Degree:&nbsp;</b>{{ment_data.educations[0].educations_degree}}</p>
+            {% endif %}
+            <p style="font-size:17px"><b>Age:&nbsp;</b>{{ment_data.age}}</p>
+         </blockquote>
+      </div>
+   </div>
+   <div class="col-sm-12" contenteditable="false" style="">
+      <div class="panel panel-default">
+         <div class="panel-heading">{{ment_data.first_name}}'s Bio</div>
+         <div class="panel-body"> {{ment_data.summary}}
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-12" contenteditable="false" style="">
+   <div class="panel panel-default">
+      <div class="panel-heading">What I would like to mentor on:</div>
+      <div class="panel-body"> "{{ment_data.description}}"
+      </div>
+   </div>
+   <div class="section subsection-reorder" id="profile-experience" style="display:block">
+   <div class="header">
+      <h2>Experience</h2>
+   </div>
+   <div class="content vcalendar">
+      <div>
+         <div>
+            {% if ment_data.positions|length > 0 %}
+            {% for pos in ment_data.positions %}
+            <div class="position  first experience vevent vcard summary-current" style="display:block">
+               <div class="postitle">
+                  <h3 class="false">
+                     <span class="title">{{pos.positions_title}}</span>
+                  </h3>
+                  <h4><strong>
+                     <span class="org summary">{{pos.positions_company_name}}</span>
+                     </strong>
+                  </h4>
+                  <p class="description">Industry:&nbsp;{{pos.positions_industry}}</p>
+               </div>
+               <p class="period">
+                  <abbr class="dtstart" title="pos_start_date">{{pos.positions_start_year}}</abbr>
+                  – <abbr class="dtstamp" title="pos_end_date">{{pos.positions_end_year}}</abbr>
+                  {% if pos.positions_end_year > 0 %}
+                  <span class="duration"><span class="value-title" title="year"> </span>({{ pos.positions_end_year - pos.positions_start_year }} years)</span>
+                  {% endif %}
+               </p>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div id="background-education-container" class="background-section" data-li-template="education_section">
+               <div id="background-education" class="background-education edit-default">
+                  <h2>Education</h2>
+                  {% if ment_data.educations|length > 0 %}
+                  {% for edu in ment_data.educations %}
+                  <div id="education" class="editable-item section-item">
+                     <div id="education-view">
+                        <div class="education  first">
+                           <header>
+                              <h4 class="summary fn org">{{edu.educations_school_name}}</h4>
+                              <h5><span class="degree">{{edu.educations_degree}}, </span><span class="major">{{edu.educations_field_of_study}}</span></h5>
+                           </header>
+                           <span class="education-date"><time>{{edu.educations_start_year}}</time><time> – {{edu.educations_end_year}}</time></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="control-group">
+               <label class="control-label" for="singlebutton"></label>
+               <div class="controls">
+                  <a href="/edit_profile" id="EditProfile" name="EditProfile" class="btn btn-primary pull-right" role="button">Edit Profile</a>
+               </div>
+            </div>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <div class="col-sm-12" contenteditable="false" style="">
+               <div class="panel panel-default">
+                  <div class="panel-heading">My Endorsements:</div>
+                  <div class="panel-body">
+                     <ul class="media-list">
+                        <li class="media">
+                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
+                           <div class="media-body">
+                              <h4 class="media-heading">Media heading</h4>
+                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </p>
+                           </div>
+                        </li>
+                        <li class="media">
+                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
+                           <div class="media-body">
+                              <h4 class="media-heading">Media heading</h4>
+                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.</p>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+      $(document).ready(function (){
+         $("#myTab .active").removeClass("active");
+         $("#myTab .profile").addClass("active");
+      });
+   </script>
+   {% endif %}
+</html>
+{% endblock %}
+

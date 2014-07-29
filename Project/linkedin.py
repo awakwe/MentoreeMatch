@@ -9,6 +9,8 @@ import os
 import urllib
 import json
 from Project import app
+import pdb
+from tabledef import User
 
 oauth = OAuth(app)
 
@@ -46,6 +48,9 @@ def authorized(resp):
 def get_linkedin_oauth_token():
     return session.get('linkedin_token')
 
+# def get_linkedin_id():
+#     return session.get('linkedin_id')
+
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
     headers['x-li-format'] = 'json'
@@ -68,6 +73,25 @@ def save_additional_user_data(mentoree_choice, age_range, gender_input, descript
     for topics in mentor_topics:
         mentor_selected_topics = tabledef.MentoreeTopic(topic_id = topics, mentor_id=session['linkedin_id'])
         tabledef.dbsession.add(mentor_selected_topics)
+    return tabledef.dbsession.commit()
+
+def update_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics):
+    user = tabledef.dbsession.query(User).filter_by(linkedin_id=session['linkedin_id']).first()
+
+    user.mentor = mentoree_choice
+    user.age = age_range
+    user.gender = gender_input
+    user.description = description_input
+
+    current_selected_topics = tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(mentor_id=session['linkedin_id']).all()
+    for curr_topics in current_selected_topics:
+        tabledef.dbsession.delete(curr_topics)
+
+    # pdb.set_trace()
+    for topics in mentor_topics:
+        mentor_selected_topics = tabledef.MentoreeTopic(topic_id = topics, mentor_id=session['linkedin_id'])
+        tabledef.dbsession.add(mentor_selected_topics)
+
     return tabledef.dbsession.commit()
 
 linkedin.pre_request = change_linkedin_query

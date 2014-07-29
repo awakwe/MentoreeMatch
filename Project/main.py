@@ -8,6 +8,8 @@ import linkedin
 from xml.dom.minidom import parseString
 from Project import app
 import json
+from flask import redirect
+import pagination
 
 app.debug = True
 app.secret_key = 'iLoveHelloKitty'
@@ -17,7 +19,21 @@ app.secret_key = 'iLoveHelloKitty'
 # it will return a json of a list of mentors that have that topics.
 # then return this list to the searchresults template to render
 
+# Pagination
+PER_PAGE = 2
+
+def url_for_other_page(page, mentee_topic_choice):
+    args = dict(request.view_args.items() + request.args.to_dict().items()) 
+    args['page'] = page
+    args['mentee_topic_choice'] = mentee_topic_choice
+    return url_for(request.endpoint, **args)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
 @app.route('/')
+def homepage():
+    return render_template('home_page.html')
+
+@app.route('/home')
 def index():
     if 'linkedin_token' in session:
         me = linkedin.linkedin.get('people/~')
@@ -67,24 +83,61 @@ def get_linkedin_data(resp):
 
     return redirect(url_for('index'))
 
-@app.route('/', methods=["POST"])
-def search_results():
-    mentee_topic_choice = request.form.get('searchtopics')
-
+@app.route('/home', defaults={'page': 1}, methods=["POST"])
+@app.route('/home/page/<int:page>/<mentee_topic_choice>')
+def search_results(page, mentee_topic_choice = None):
+    mentee_topic_choice = mentee_topic_choice or request.form.get('searchtopics')
     mentor_data = search.search(mentee_topic_choice)
-    search_topic = search.search_topic_display(mentee_topic_choice)
-    print "mentor_data[0].educations_field_of_study"
-    print mentor_data[0].ment_user.educations[0].educations_field_of_study
-    return render_template('searchresults.html', mentor_data=mentor_data, search_topic_display=search_topic)
 
-# @app.route('/search_results', methods=["GET"])
-# def search_results():
-#     mentor_data = request.args['mentor_data']
-#     return render_template('searchresults.html', mentor_data=mentor_data)
+    start_index = (page - 1) * (PER_PAGE)
+    end_index = (page) * (PER_PAGE)
+
+    ment_count = len(mentor_data)
+    users = mentor_data[start_index:end_index]
+    # users = mentor_data.paginate(page, PER_PAGE, False)
+
+    if not users and page != 1:
+        abort(404)
+    pagination_per_page = pagination.Pagination(page, PER_PAGE, ment_count)
+    search_topic = search.search_topic_display(mentee_topic_choice)
+    return render_template('searchresults.html', search_topic_display=search_topic, 
+        pagination=pagination_per_page, users=users, mentee_topic_choice=mentee_topic_choice)
 
 
 @app.route('/mentor_detail/<linkedin_id>', methods=["GET"])
 def mentor_page(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
     return render_template('mentor_detail.html', ment_data=ment_data)
-#    
+
+@app.route('/profile', methods=["GET"])
+def self_page():
+    print "~!~!~!~!~ session linkedin_id"
+    print session['linkedin_id'] 
+    if 'linkedin_id' in session:
+        ment_data = search.mentor_detail_display(session['linkedin_id'])
+        return render_template('self_profile.html', ment_data=ment_data)
+    return redirect(url_for('login'))
+
+@app.route('/edit_profile', methods=["GET"])
+def mentor_page_update():
+    if 'linkedin_id' in session:
+        ment_data = search.mentor_detail_display(session['linkedin_id'])
+        ment_pers_topics = search.mentor_personal_topics(session['linkedin_id'])
+        topics = tabledef.Topic.query.order_by("topic_id").all()
+        return render_template('edit_self_profile.html', ment_data=ment_data, ment_pers_topics=ment_pers_topics, topics=topics)
+    return redirect(url_for('login'))
+
+@app.route('/edit_profile', methods=["POST"])
+def mentor_page_update_post():
+    mentoree_choice = request.form.get('mentoree-radios')
+    age_range = request.form.get('agerange')
+    gender_input = request.form.get('gender_radios')
+    description_input = request.form.get('description')
+    mentor_topics = request.form.getlist('mentortopics')
+
+    linkedin.update_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics)
+    return redirect(url_for('self_page'))
+
+
+
+   

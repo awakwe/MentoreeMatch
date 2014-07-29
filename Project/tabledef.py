@@ -50,10 +50,9 @@ class User(Base):
 
     certifications = Column(String(200), nullable = True)
     summary = Column(String(500), nullable=True)
-    #make sure the token is the same. person is logged in for the rest of session
 
     educations = relationship("Education")
-    # positions = 
+    positions = relationship("Position")
     
 def import_linkedin_user(data):
     user = User();
@@ -109,7 +108,7 @@ def import_linkedin_user(data):
     pos_values = positions.get('values',None)
     if pos_values != None:
         for entry in pos_values:
-            position = Positions()
+            position = Position()
             position.linkedin_id = user.linkedin_id
             if 'startDate' in entry:
                 posstartyear = entry['startDate']['year']
@@ -124,15 +123,23 @@ def import_linkedin_user(data):
                 # print postitle
                 position.positions_title = postitle
             if 'company' in entry:
-                coname = entry['company']['name']
-                # print coname
-                position.positions_company_name = coname
+                co_entry = entry['company']
+                if 'name' in co_entry:
+                    print "~~~~~~~~~~~~~~~~~~~~~~ company name"
+                    print entry
+                    print entry['company']
+                    coname = entry['company']['name']
+                    print coname
+                    position.positions_company_name = coname
             position_models.append(position)
 
     cert = data.get('certifications',None)
     if cert != None:
         cert_name = cert['values'][0]['name']
         user.certifications = cert_name
+
+    mentor_topics = MentoreeTopic()
+    mentor_topics.linkedin_id = user.linkedin_id
 
     user.summary = data.get('summary',None)
     user.picture_url = data.get('pictureUrl', None)
@@ -142,10 +149,11 @@ def import_linkedin_user(data):
     existing_user = dbsession.query(User).filter_by(linkedin_id = current_user_id).first()
     if existing_user == None:
         dbsession.add(user)
+        dbsession.add(mentor_topics)
 
         for model in education_models:
-            print "model"
-            print model
+            # print "model"
+            # print model
             dbsession.add(model)
 
         for models in position_models:
@@ -153,11 +161,6 @@ def import_linkedin_user(data):
 
         dbsession.commit()
 
-    #if user doesn't already exist
-        #dbsession.add(user)
-        # dbsession.add(education)
-        # dbsession.add(position)
-        # dbsession.commit()
     return user
 
 class Education(Base):
@@ -173,7 +176,7 @@ class Education(Base):
 
     # ment_user = relationship("User", backref=backref("educations", order_by=id))
 
-class Positions(Base):
+class Position(Base):
     __tablename__="positions"
     id = Column(Integer, primary_key=True)
     linkedin_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = True)
@@ -183,7 +186,7 @@ class Positions(Base):
     positions_industry = Column(String(200), nullable = True)
     positions_title = Column(String(200), nullable = True)
 
-    ment_user = relationship("User", backref=backref("positions", order_by=id))
+    # ment_user = relationship("User", backref=backref("positions", order_by=id))
 
 class MentoreeTopic(Base):
     __tablename__ = "mentoree_topics"

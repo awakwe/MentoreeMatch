@@ -9,38 +9,32 @@ import pdb
 # from Project import app
 
 def search(searchtopics):
-	# logic:
-	# grabbing it from database and get results page
-	# pass results back to main.py to render
-	# return render to search results page
-	# mentor_data = []
-	# mentor_search_dict = {}
 	search_results=tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(topic_id=searchtopics).all()
-	print "!!~~~ SEARCH RESULTS!!~~~"
-	print search_results
-	print search_results[0].topic_id
-	# print len(search_results)
-	# for mentor in search_results:
-	# 	ment_data = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=mentor.mentor_id).first()
-	# 	print "!!~~~ ment_data~~~"
-	# 	print ment_data
-	# 	result_dict = ment_data.__dict__
-	# 	mentor_data.append(result_dict)
-	# for mentor in search_results:
-	# 	# print mentor.mentor_id
-	# 	ment_data = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=mentor.mentor_id).first()
-	# 	mentor_data.append(ment_data)
-	# print(dict(zip(mentor.keys(), mentor)))
 	return search_results
 
 def search_topic_display(searchtopics):
 	search_results=tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(topic_id=searchtopics).all()
 	search_topic = tabledef.dbsession.query(tabledef.Topic).filter_by(topic_id=search_results[0].topic_id).first()
-	print search_topic
+	# print search_topic
+	# print "=^.^= meeeeoow! search topic"
+
 	search_topic_title = search_topic.title
+	print search_topic_title
 	return search_topic_title
 
 def mentor_detail_display(linkedin_id):
-	pdb.set_trace()
+	# pdb.set_trace()
 	ment_data = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=linkedin_id).first()
+	# print "!!~~~~~~~~~~~ment_data.positions[0].positions_title~~~~~~~~~~~~~~~~~~~~~~!!"
+	# print ment_data.positions[0].positions_title
+	# ment_data.positions.positions_title
 	return ment_data
+
+def mentor_personal_topics(linkedin_id):
+	# pdb.set_trace()
+	ment_pers_topics = tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(mentor_id=linkedin_id).all()
+	# for topics in ment_pers_topics:
+		# print "((((((~~~~~~~~~~~topics.topic_id~~~~~~~~~~~~~~~~~~~~~~))"
+		# print topics.topic_id
+
+	return ment_pers_topics

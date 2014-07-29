@@ -5,18 +5,18 @@
    <h2> {{ error }} </h2>
    {% else %}
    <div class="page-header">
-               <h1>
-                  Search Results <small>for {{search_topic_display}}:</small>
-               </h1>
-            </div>
-   {% for mentors in mentor_data %}
+      <h1>
+         Search Results <small>for {{search_topic_display}}:</small>
+      </h1>
+   </div>
+   {% for mentors in users %}
    <div class="container">
       <div class="row clearfix">
          <div class="col-md-12 column">
             <div class="panel panel-default">
                <div class="panel-heading">
                   <h3 class="panel-title">
-                     <a href="/mentor_detail/{{mentors.linkedin_id}}">{{mentors.ment_user.first_name}}&nbsp;{{mentors.ment_user.last_name}}</a>
+                     <a href="/mentor_detail/{{mentors.ment_user.linkedin_id}}">{{mentors.ment_user.first_name}}&nbsp;{{mentors.ment_user.last_name}}</a>
                   </h3>
                </div>
                <div class="panel-body">
@@ -25,11 +25,13 @@
                      <div class="media-body">
                         <p><b>Industry:&nbsp;</b>{{mentors.ment_user.industry}}</p>
                         {% if mentors.ment_user.educations|length > 0 %}
-                           <p><b>Field of Study:&nbsp;</b>
-                              {% for ed in mentors.ment_user.educations %}
-                                 {{ed.educations_field_of_study}},
-                              {% endfor %}
-                           </p>
+                        <p><b>Field of Study:&nbsp;</b>
+                           {% set count = 1 %}
+                           {% for ed in mentors.ment_user.educations %}
+                           {{ed.educations_field_of_study}}{% if count < mentors.ment_user.educations|length %}, {% endif %}
+                           {% set count = count + 1 %}
+                           {% endfor %}
+                        </p>
                         {% endif %}
                         "{{mentors.ment_user.description}}"
                      </div>
@@ -43,6 +45,23 @@
       </div>
    </div>
    {% endfor %}
+  <div class=pagination>
+  {%- for page in pagination.iter_pages() %}
+    {% if page %}
+      {% if page != pagination.page %}
+        <a href="{{ url_for_other_page(page, mentee_topic_choice) }}">{{ page }}</a>
+      {% else %}
+        <strong>{{ page }}</strong>
+      {% endif %}
+    {% else %}
+      <span class=ellipsis>…</span>
+    {% endif %}
+  {%- endfor %}
+  {% if pagination.has_next %}
+    <a href="{{ url_for_other_page(pagination.page + 1, mentee_topic_choice)
+      }}">Next &raquo;</a>
+  {% endif %}
+  </div>
    <script></script>
    {% endif %}
 </html>
