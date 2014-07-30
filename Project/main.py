@@ -14,11 +14,6 @@ import pagination
 app.debug = True
 app.secret_key = 'iLoveHelloKitty'
 
-# main is for rendering templates. call function and render,
-# post request will have topics ur looking for. send those topics as a parameter to search function. search function in search will do database query. 
-# it will return a json of a list of mentors that have that topics.
-# then return this list to the searchresults template to render
-
 # Pagination
 PER_PAGE = 2
 
@@ -39,8 +34,8 @@ def index():
         me = linkedin.linkedin.get('people/~')
         jsonify(me.data)
         # linkedin_data = json.loads(linkedin_json_string)
-       
-        return render_template('index.html')
+        topics = tabledef.Topic.query.order_by("topic_id").all()
+        return render_template('index.html', topics=topics)
     return redirect(url_for('login'))
 
 @app.route('/additionalinfo', methods=["GET"])

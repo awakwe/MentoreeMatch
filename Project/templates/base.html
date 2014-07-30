@@ -24,20 +24,18 @@
             </div>
          </div>
       </div>
-      <div class = "nav-tabs">
       <ul class="nav nav-tabs" id="myTab">
-         <li class="active home"><a href="/home">Search</a></li>
-         <li class="profile"><a href="/profile">Profile</a></li>
-         <li class="messages"><a href="/email">Email</a></li>
-         <li class="settings"><a href="/about">About Us</a></li>
+         <li class="settings pull-right"><a href="/about">About Us</a></li>
+         <li class="messages pull-right"><a href="/email">Email</a></li>
+         <li class="profile pull-right"><a href="/profile">Profile</a></li>
+         <li class="active home pull-right"><a href="/home">Search</a></li>
       </ul>
       <div class="tab-content">
-         <div class="tab-pane active" id="home">search</div>
-         <div class="tab-pane" id="profile">profile</div>
-         <div class="tab-pane" id="email">email</div>
-         <div class="tab-pane" id="about">about us</div>
+         <div class="tab-pane active" id="home"></div>
+         <div class="tab-pane" id="profile"></div>
+         <div class="tab-pane" id="email"></div>
+         <div class="tab-pane" id="about"></div>
       </div>
-  </div>
       <div class="container">
          {% with messages = get_flashed_messages() %}
          {% if messages %}
@@ -49,6 +47,24 @@
          {% endif %}
          {% endwith %}
          {% block body %}{% endblock %}
+      </div>
+      <div class="container">
+         <div class="col-sm-8 col-sm-offset-2 text-center">
+            <hr>
+            <h5>
+               “In learning you will teach, and in teaching you will learn.” 
+            </h5>
+            <p>― Phil Collins</p>
+            <hr>
+         </div>
+         <!--/col-->
+      </div>
+      <!--/container-->
+      </div><!--/wrap-->
+      <div id="footer">
+         <div class="container">
+            <p class="text-muted">Some footer text <a href="http://www.mentoree.com">mentoree.com</a></p>
+         </div>
       </div>
       <script>
          $('#myTab a').click(function (e) {

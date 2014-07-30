@@ -7,165 +7,39 @@
    <br>
    <div class="jumbotron" style="overflow:auto">
       <h2 class="search-form">Search</h2>
-   <img src="static/img/mentorship_zen.jpg" class="img-responsive">
-   <form method="POST" action="/home">
-      
-      <div class="searchtopics-group">
-         <br>
-      <label class="searchtopics-label" for="searchtopics">Search Topics:</label>
-      <div class="searchtopics">
-         <div class = "form-horizontal">
-            <div class = "col-xs-4 form-group">
-               <div class = "radio">
-                  <label class="radios" for="radios-0">
-                  <input type="radio" name="searchtopics" id="searchtopics-0" value=1>
-                  Arts & Crafts
-                  </label>
+      <img src="static/img/mentorship_zen.jpg" class="img-responsive">
+      <form method="POST" action="/home">
+
+         <div class="searchtopics-group">
+            <label class="searchtopics-label" for="searchtopics">Search Topics:</label>
+            <div class="searchtopics">
+            <div class = "form-horizontal">
+               <div class = "col-xs-4 form-group">
+                  <div class = "radio">
+                  {% for i in range(topics | length) %}
+                  {% if i > 0 and i%8 == 0 %}
                </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-1">
-                  <input type="radio" name="searchtopics" id="searchtopics-1" value=2>
-                  Career & Business
+               <div class = "col-xs-4 form-group">
+                  <div class = "radio">
+                  {% endif %}
+                  <label class="radios">
+                  <input type="radio" name="searchtopics" value="{{topics[i].topic_id}}">
+                  {{topics[i].title}}
                   </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-2">
-                  <input type="radio" name="searchtopics" id="searchtopics-2" value=3>
-                  Community & Environment
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-3">
-                  <input type="radio" name="searchtopics" id="searchtopics-3" value=4>
-                  Education & Learning
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-4">
-                  <input type="radio" name="searchtopics" id="searchtopics-4" value=5>
-                  Fitness
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-5">
-                  <input type="radio" name="searchtopics" id="searchtopics-5" value=6>
-                  Food & Drinks
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-6">
-                  <input type="radio" name="searchtopics" id="radioses-6" value=7>
-                  Health & Well Being
-                  </label>
+                  {% endfor %}
                </div>
             </div>
-            <div class="col-xs-4 form-group">
-               <div class = "radio">
-                  <label class="radios" for="radios-7">
-                  <input type="radio" name="searchtopics" id="searchtopics-7" value=8>
-                  Language & Ethnic Identity
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-8" value=9>
-                  Life Experiences
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-9" value=10>
-                  Literature & Writing
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-10" value=11>
-                  Motivation
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-11" value=12>
-                  New Age & Spirituality
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-12" value=13>
-                  Outdoors & Adventure
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-13" value=14>
-                  Parents & Family
-                  </label>
-               </div>
-            </div>
-            <div class="col-md-4 form-group">
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-14" value=15>
-                  Peer Pressure
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-15" value=16>
-                  Pets & Animals
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-16" value=17>
-                  Religion & Beliefs
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-17" value=18>
-                  Self-improvement/Growth
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-18" value=19>
-                  Sports & Recreation
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-19" value=20>
-                  Support
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-20" value=21>
-                  Tech
-                  </label>
-               </div>
-               <div class = "radio">
-                  <label class="radios" for="radios-8">
-                  <input type="radio" name="searchtopics" id="searchtopics-21" value=22>
-                  Women
-                  </label>
-               </div>
-               </div>
             </div>
          </div>
 
-  </div>
-      <div class="col-lg-3 col-sm-4 col-6 fixedheight">
-            <button id="submit" name="submit" class="btn btn-primary">Submit</button>
-         </div>
-      </div>
 
+         <div class="col-lg-3 col-sm-4 col-6 fixedheight">
+            <button id="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
+         </div>
+   </div>
    </form>
-</div>
-</div>
-   
+   </div>
+   </div>
    <script></script>
    {% endif %}
 </html>

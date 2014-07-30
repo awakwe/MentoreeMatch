@@ -7,6 +7,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import sessionmaker, scoped_session
 import pdb
+import os
 
 engine = create_engine("sqlite:///mentoring.db", echo=True)
 dbsession = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
@@ -35,19 +36,6 @@ class User(Base):
     industry = Column(String(64), nullable = True)
     headline = Column(String(100), nullable = True)
     picture_url = Column(String(200), nullable = True)
-    # educations
-    # educations_start_year = Column(Integer, nullable = True)
-    # educations_end_year = Column(Integer, nullable = True)
-    # educations_school_name = Column(String(200), nullable = True)
-    # educations_field_of_study = Column(String(200), nullable = True)
-    # educations_degree = Column(String(200), nullable = True)
-    # positions
-    # positions_start_year = Column(Integer, nullable = True)
-    # positions_end_year = Column(Integer, nullable = True)
-    # positions_company_name = Column(String(200), nullable = True)
-    # positions_industry = Column(String(200), nullable = True)
-    # positions_title = Column(String(200), nullable = True)
-
     certifications = Column(String(200), nullable = True)
     summary = Column(String(500), nullable=True)
 
@@ -200,6 +188,16 @@ class Topic(Base):
     __tablename__ = "topics"
     topic_id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=True)
+
+# class Endorsement(Base):
+#     __tablename__ = "endorsements"
+#     id = Column(Integer, primary_key=True)
+#     sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+#     receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+#     title = Column(String(100), nullable=True)
+#     endorsements_text = Column(String(500), nullable=True)
+
+#     ment_user = relationship("User", backref=backref("endorsements", order_by=id))
 
 def createTable():
     Base.metadata.create_all(engine)
