@@ -9,7 +9,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import pdb
 import os
 
-engine = create_engine("sqlite:///mentoring.db", echo=True)
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///mentoring.db")
+engine = create_engine(DATABASE_URL, echo=True)
 dbsession = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 
 Base = declarative_base()
