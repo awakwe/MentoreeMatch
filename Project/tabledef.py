@@ -181,7 +181,7 @@ class MentoreeTopic(Base):
     __tablename__ = "mentoree_topics"
     id = Column(Integer, primary_key=True)
     topic_id = Column(Integer, ForeignKey('topics.topic_id'), nullable=True)
-    mentor_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable=True)
+    mentor_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable=True)
 
     ment_user = relationship("User", backref=backref("mentoree_topics", order_by=id))
 

@@ -26,4 +26,6 @@ INSERT INTO "topics" VALUES(19,'Sports & Recreation');
 INSERT INTO "topics" VALUES(20,'Support');
 INSERT INTO "topics" VALUES(21,'Tech');
 INSERT INTO "topics" VALUES(22,'Women');
+
+
 COMMIT;
