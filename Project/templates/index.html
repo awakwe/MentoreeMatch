@@ -9,23 +9,23 @@
       <h2 class="search-form">Search</h2>
       <img src="static/img/mentorship_zen.jpg" class="img-responsive">
       <form method="POST" action="/home">
-
+         <br><br>
          <div class="searchtopics-group">
             <label class="searchtopics-label" for="searchtopics">Search Topics:</label>
             <div class="searchtopics">
             <div class = "form-horizontal">
                <div class = "col-xs-4 form-group">
-                  <div class = "radio">
                   {% for i in range(topics | length) %}
-                  {% if i > 0 and i%8 == 0 %}
+                   {% if i > 0 and i%8 == 0 %}
                </div>
                <div class = "col-xs-4 form-group">
-                  <div class = "radio">
                   {% endif %}
+                  <div class = "radio">
                   <label class="radios">
                   <input type="radio" name="searchtopics" value="{{topics[i].topic_id}}">
                   {{topics[i].title}}
                   </label>
+                  </div>
                   {% endfor %}
                </div>
             </div>

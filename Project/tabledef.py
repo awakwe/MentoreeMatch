@@ -32,7 +32,7 @@ class User(Base):
     mentor = Column (Boolean, nullable = True)
     age = Column(String(50), nullable = True)
     gender = Column(String(50), nullable = True)
-    description = Column(String(501), nullable = True)
+    description = Column(String(1000), nullable = True)
     #~~~#
     industry = Column(String(64), nullable = True)
     headline = Column(String(100), nullable = True)

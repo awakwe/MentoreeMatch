@@ -15,7 +15,7 @@ app.debug = True
 app.secret_key = 'iLoveHelloKitty'
 
 # Pagination
-PER_PAGE = 2
+PER_PAGE = 5
 
 def url_for_other_page(page, mentee_topic_choice):
     args = dict(request.view_args.items() + request.args.to_dict().items()) 
