@@ -30,7 +30,7 @@ class User(Base):
     email = Column(String(255), nullable = True)
     #~~~# Data From Additional Info Page
     mentor = Column (Boolean, nullable = True)
-    age = Column(Integer, nullable = True)
+    age = Column(String(50), nullable = True)
     gender = Column(String(1), nullable = True)
     description = Column(String(501), nullable = True)
     #~~~#
