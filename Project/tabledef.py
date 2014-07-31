@@ -31,7 +31,7 @@ class User(Base):
     #~~~# Data From Additional Info Page
     mentor = Column (Boolean, nullable = True)
     age = Column(String(50), nullable = True)
-    gender = Column(String(1), nullable = True)
+    gender = Column(String(50), nullable = True)
     description = Column(String(501), nullable = True)
     #~~~#
     industry = Column(String(64), nullable = True)
