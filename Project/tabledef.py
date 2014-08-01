@@ -190,15 +190,33 @@ class Topic(Base):
     topic_id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=True)
 
-# class Endorsement(Base):
-#     __tablename__ = "endorsements"
-#     id = Column(Integer, primary_key=True)
-#     sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
-#     receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
-#     title = Column(String(100), nullable=True)
-#     endorsements_text = Column(String(500), nullable=True)
+class Endorsement(Base):
+    __tablename__ = "endorsements"
+    id = Column(Integer, primary_key=True)
+    sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    title = Column(String(100), nullable=True)
+    endorsements_text = Column(String(500), nullable=True)
 
-#     ment_user = relationship("User", backref=backref("endorsements", order_by=id))
+    sender = relationship("User", primaryjoin="User.linkedin_id==Endorsement.sender_id")
+    receiver = relationship("User", primaryjoin="User.linkedin_id==Endorsement.receiver_id")
+
+class Email(Base):
+    __tablename__ = "emails"
+    id = Column(Integer, primary_key=True)
+    sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    subject = Column(String(100), nullable=True)
+    text_body = Column(String(50000), nullable=True)
+
+    sender = relationship("User", primaryjoin="User.linkedin_id==Email.sender_id")
+    receiver = relationship("User", primaryjoin="User.linkedin_id==Email.receiver_id")
+
+# class Quote(Base):
+#     __tablename__ = "quotes"
+#     id = Column(Integer, primary_key=True)
+#     quote_author = Column(String(100), nullable=True)
+#     quote = Column(String(10000), nullable=True)
 
 def createTable():
     Base.metadata.create_all(engine)

@@ -10,6 +10,7 @@ from Project import app
 import json
 from flask import redirect
 import pagination
+import email_module
 
 app.debug = True
 app.secret_key = 'iLoveHelloKitty'
@@ -133,6 +134,30 @@ def mentor_page_update_post():
     linkedin.update_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics)
     return redirect(url_for('self_page'))
 
+
+@app.route('/email/<linkedin_id>', methods=["GET"])
+def email_get(linkedin_id):
+    ment_data = search.mentor_detail_display(linkedin_id)
+    user_data = search.mentor_detail_display(session['linkedin_id'])
+    return render_template('email_form.html', ment_data=ment_data, user_data=user_data)
+
+@app.route('/email', methods=["POST"])
+def email_post():
+    sender = session['linkedin_id']
+    sender_data= search.mentor_detail_display(sender)
+    sender_email = sender_data.email
+
+    mentor = request.form.get('mentor_id')
+    mentor_data = search.mentor_detail_display(mentor)
+    mentor_email = mentor_data.email
+
+    subject = request.form.get('subject')
+    subject_body = request.form.get('message')
+
+    email_module.save_email_to_database(sender_email, mentor_email, subject, subject_body)
+    email_module.send_email(sender_email, mentor_email, subject, subject_body)
+
+    return render_template('email_form.html')
 
 
    
