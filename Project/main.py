@@ -139,6 +139,9 @@ def mentor_page_update_post():
 def email_get(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
     user_data = search.mentor_detail_display(session['linkedin_id'])
+    print "email GET ^^^^^^^^^^^^^^^^^^"
+    print ment_data
+    print user_data
     return render_template('email_form.html', ment_data=ment_data, user_data=user_data)
 
 @app.route('/email', methods=["POST"])
@@ -148,16 +151,24 @@ def email_post():
     sender_email = sender_data.email
 
     mentor = request.form.get('mentor_id')
+    print "mentor"
+    print mentor
     mentor_data = search.mentor_detail_display(mentor)
     mentor_email = mentor_data.email
 
     subject = request.form.get('subject')
     subject_body = request.form.get('message')
+    print "^^^^^^^^^^^^^^^^^^ sender email, mentor email, subject body"
+    print sender_email
+    print mentor_email
+    print subject_body
 
-    email_module.save_email_to_database(sender_email, mentor_email, subject, subject_body)
+    email_module.save_email_info_to_database(sender, mentor, subject, subject_body)
     email_module.send_email(sender_email, mentor_email, subject, subject_body)
 
-    return render_template('email_form.html')
+    messages = flash('Success! Your message has been sent successfully.')
+
+    return redirect(url_for('email_get', linkedin_id=mentor, messages=messages))
 
 
    

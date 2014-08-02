@@ -1,8 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Boolean, Text
+from sqlalchemy import Column, Integer, String, Boolean, Text, DateTime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.dialects.sqlite import DATETIME
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -193,8 +192,8 @@ class Topic(Base):
 class Endorsement(Base):
     __tablename__ = "endorsements"
     id = Column(Integer, primary_key=True)
-    sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
-    receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    sender_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = False)
+    receiver_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = False)
     title = Column(String(100), nullable=True)
     endorsements_text = Column(String(500), nullable=True)
 
@@ -204,19 +203,20 @@ class Endorsement(Base):
 class Email(Base):
     __tablename__ = "emails"
     id = Column(Integer, primary_key=True)
-    sender_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
-    receiver_id = Column(Integer, ForeignKey('users.linkedin_id'), nullable = False)
+    sender_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = False)
+    receiver_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = False)
     subject = Column(String(100), nullable=True)
     text_body = Column(String(50000), nullable=True)
+    sent_date = Column(DateTime, nullable=True)
 
     sender = relationship("User", primaryjoin="User.linkedin_id==Email.sender_id")
     receiver = relationship("User", primaryjoin="User.linkedin_id==Email.receiver_id")
 
-# class Quote(Base):
-#     __tablename__ = "quotes"
-#     id = Column(Integer, primary_key=True)
-#     quote_author = Column(String(100), nullable=True)
-#     quote = Column(String(10000), nullable=True)
+class Quote(Base):
+    __tablename__ = "quotes"
+    id = Column(Integer, primary_key=True)
+    quote_author = Column(String(100), nullable=True)
+    quote = Column(String(10000), nullable=True)
 
 def createTable():
     Base.metadata.create_all(engine)
