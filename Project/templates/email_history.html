@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   {% if error %}
+   <h2> {{ error }} </h2>
+   {% else %}
+   <html>
+      <body>
+         <form>
+            <br>
+            <div class="jumbotron jumbotron-sm">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-sm-12 col-lg-12">
+                        <div class="col-sm-3 column">
+                        </div>
+                        <div class="col-sm-9 column">
+                           <h1 class="h1">
+                              &nbsp;&nbsp;Email Inbox
+                           </h1>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-4">
+                     <legend><span class="glyphicon glyphicon-globe"></span>&nbsp;Email History</legend>
+                     <table class="table">
+                        <thead>
+                           <tr>
+                              <th>
+                                 #
+                              </th>
+                              <th>
+                                 Date
+                              </th>
+                              <th>
+                                 Subject
+                              </th>
+                              <th>
+                                 From
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% set count = 1 %}
+                           {% for emails in email_history %}
+                           <tr id="{{emails.id}}">
+                              <td>
+                                 {{count}}
+                                 {% set count= count+1 %}
+                              </td>
+                              <td>
+                                 {{emails.sent_date.strftime('%d/%m/%Y')}}
+                              </td>
+                              <td>
+                                 {{emails.subject}}
+                              </td>
+                              <td>
+                                 {{emails.sender.first_name}}&nbsp;{{emails.sender.last_name}}
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="col-md-8">
+                     <div class="well well-sm">
+                        <div class="row">
+                           <div class="col-md-12">
+
+                              <div class="email_contents">
+                                 <img src="static/img/mentor_logo_grey.png" class="img-responsive center-block">
+                              </div>
+                           </div>
+                          
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </form>
+         <script>
+            $(document).ready(function (){
+               $("#myTab .active").removeClass("active");
+               $("#myTab .email").addClass("active");
+            
+               $("tbody tr").click(function(){
+                  var emailId = $(this).attr('id');
+            
+            $.getJSON("/email_detail/"+emailId,function(result){
+                  $(".email_contents").html(
+                     '<p>'+result.sent_date+'</p>'+
+                     '<br>'+
+                     '<p>'+result.subject+'</p>'+
+                     '<p>'+result.text_body+'</p>'+
+                     '<div class="form-group">\
+                     <a class="btn btn-primary btn-large pull-right" href="/email/'+result.sender_id+'">Reply</a>\
+                              </div>')
+            });
+            });
+            });
+         </script>
+         {% endif %}
+      </body>
+   </html>
+   {% endblock %}

@@ -139,10 +139,11 @@ def mentor_page_update_post():
 def email_get(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
     user_data = search.mentor_detail_display(session['linkedin_id'])
+    email_history = email_module.get_email_history_per_mentor(linkedin_id)
     print "email GET ^^^^^^^^^^^^^^^^^^"
     print ment_data
     print user_data
-    return render_template('email_form.html', ment_data=ment_data, user_data=user_data)
+    return render_template('email_form.html', ment_data=ment_data, user_data=user_data, email_history=email_history)
 
 @app.route('/email', methods=["POST"])
 def email_post():
@@ -158,10 +159,6 @@ def email_post():
 
     subject = request.form.get('subject')
     subject_body = request.form.get('message')
-    print "^^^^^^^^^^^^^^^^^^ sender email, mentor email, subject body"
-    print sender_email
-    print mentor_email
-    print subject_body
 
     email_module.save_email_info_to_database(sender, mentor, subject, subject_body)
     email_module.send_email(sender_email, mentor_email, subject, subject_body)
@@ -169,6 +166,24 @@ def email_post():
     messages = flash('Success! Your message has been sent successfully.')
 
     return redirect(url_for('email_get', linkedin_id=mentor, messages=messages))
+
+@app.route('/email_history', methods=["GET"])
+def email_history():
+    user_data = search.mentor_detail_display(session['linkedin_id'])
+    email_history = email_module.get_email_history()
+    print "!@#$%^&*()_+ EMAIL HISTORY on main"
+    print email_history
+    return render_template('email_history.html', user_data=user_data, email_history=email_history)
+
+@app.route('/email_detail/<email_id>', methods=["GET"])
+def email_detail(email_id):
+    email_selected = email_module.get_email_with_id(email_id)
+    if not email_selected:
+        email_selected = {}
+    print "!@#$%^&*()_+ email_selected on main"
+    print email_selected
+    print email_module.format_json(email_selected)
+    return jsonify(**email_module.format_json(email_selected))
 
 
    
