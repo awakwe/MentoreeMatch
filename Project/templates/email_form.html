@@ -27,7 +27,7 @@
             <div class="container">
                <div class="row">
                   <div class="col-md-4">
-                     <legend><span class="glyphicon glyphicon-globe"></span> Email History with:&nbsp;{{ment_data.first_name}}</legend>
+                     <legend><span class="glyphicon glyphicon-globe"></span> Email Sent to:&nbsp;{{ment_data.first_name}}</legend>
                      <table class="table">
                         <thead>
                            <tr>
@@ -39,6 +39,9 @@
                               </th>
                               <th>
                                  Subject
+                              </th>
+                              <th>
+                                 From
                               </th>
                            </tr>
                         </thead>
@@ -52,7 +55,7 @@
                               {% set count= count+1 %}
                            </td>
                            <td>
-                              {{emails.sent_date}}
+                              {{emails.sent_date.strftime('%m/%d/%Y')}}
                            </td>
                            <td>
                               {{emails.subject}}
@@ -69,6 +72,10 @@
                   <div class="col-md-8">
                      <div class="well well-sm">
                         <div class="row">
+                           <div class="col-md-12">
+                           <div class="email_contents">
+                                 </div>
+                              </div>
                            <div class="col-md-6">
                               <fieldset disabled>
                                  <div class="form-group">
@@ -100,6 +107,7 @@
                            </div>
                            <div class="form-group">
                               <div class="col-md-12">
+                                 
                                  <button type="submit" class="btn btn-primary pull-right" id="btnEmail">
                                  Send Message</button>
                               </div>
@@ -112,10 +120,43 @@
             </div>
          </form>
          <script>
+            function email_detail(result) {
+               $(".email_contents").html(
+                  '<div class="container">'+
+                  '<div class="row clearfix">'+
+                  '<div class="col-md-7 column">'+
+                  '<div class="list-group">'+
+                  '<h5>From:&nbsp;'+result.sender.first_name+'&nbsp;'+result.sender.last_name+' </h5>'+
+                  '<div class="list-group-item">'+
+                  '<h4>Subject:&nbsp;<small>'+result.subject+'</small></h4>'+
+                  '</div>'+
+                  '<div class="list-group-item">'+
+                  '<h4 class="list-group-item-heading text-right">'+
+                     '<small>'+result.sent_date+'</small></h4><br>'+
+                  '<p class="list-group-item-text">'+
+                     result.text_body+
+                  '</p>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>')
+            }
+
             $(document).ready(function (){
                $("#myTab .active").removeClass("active");
                $("#myTab .email").addClass("active");
+            
+
+               $("tbody tr").click(function(){
+                  var emailId = $(this).attr('id');
+               
+                  $.getJSON("/email_detail/"+emailId,function(result){
+                     email_detail(result)  
+                  })
+               })
             });
+
          </script>
          {% endif %}
       </body>

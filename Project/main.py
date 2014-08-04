@@ -134,7 +134,7 @@ def mentor_page_update_post():
     linkedin.update_additional_user_data(mentoree_choice, age_range, gender_input, description_input, mentor_topics)
     return redirect(url_for('self_page'))
 
-
+# EMAIL FORM Page
 @app.route('/email/<linkedin_id>', methods=["GET"])
 def email_get(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
@@ -167,6 +167,7 @@ def email_post():
 
     return redirect(url_for('email_get', linkedin_id=mentor, messages=messages))
 
+# EMAIL INBOX Page
 @app.route('/email_history', methods=["GET"])
 def email_history():
     user_data = search.mentor_detail_display(session['linkedin_id'])
@@ -177,13 +178,21 @@ def email_history():
 
 @app.route('/email_detail/<email_id>', methods=["GET"])
 def email_detail(email_id):
-    email_selected = email_module.get_email_with_id(email_id)
-    if not email_selected:
-        email_selected = {}
-    print "!@#$%^&*()_+ email_selected on main"
-    print email_selected
-    print email_module.format_json(email_selected)
-    return jsonify(**email_module.format_json(email_selected))
+    eid = email_module.get_email_with_id(email_id)
+    email_selected = {}
+    email_selected["id"]          = eid.id
+    email_selected["receiver_id"] = eid.receiver_id
+    email_selected["sender_id"]   = eid.sender_id
+    email_selected["sent_date"]   = eid.sent_date.strftime("%d/%m/%Y")
+    email_selected["subject"]     = eid.subject
+    email_selected["text_body"]   = eid.text_body
+
+    email_selected["sender"] = {}
+    email_selected["sender"]["first_name"] = eid.sender.first_name
+    email_selected["sender"]["last_name"] = eid.sender.last_name
+
+    return json.dumps(email_selected)
+    #return jsonify(**email_module.format_json(email_selected))
 
 
    

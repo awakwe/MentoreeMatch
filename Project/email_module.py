@@ -41,9 +41,9 @@ def get_email_history():
     return email_hist
 
 def get_email_with_id(email_id):
-    email_id = tabledef.dbsession.query(Email).filter_by(id=email_id).first()
-    
-    return email_id
+    email_id = tabledef.dbsession.query(Email).filter_by(id=email_id).all()
+    eid = email_id[0]
+    return eid
 
 def format_json(row):
     formatted_json_dict={}
