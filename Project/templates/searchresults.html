@@ -21,7 +21,13 @@
                </div>
                <div class="panel-body">
                   <div class="media">
-                     <a href="#" class="pull-left"><img src="{{mentors.ment_user.picture_url}}" class="media-object" alt='' /></a>
+                     <a href="#" class="pull-left">
+                      {% if mentors.ment_user.picture_url != None %}
+                      <img src="{{mentors.ment_user.picture_url}}" class="media-object" alt='140x140' />
+                      {% else %}
+                      <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
+                      {% endif %}
+                    </a>
                      <div class="media-body">
                         <p><b>Industry:&nbsp;</b>{{mentors.ment_user.industry}}</p>
                         {% if mentors.ment_user.educations|length > 0 %}

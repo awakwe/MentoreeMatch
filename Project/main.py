@@ -11,6 +11,7 @@ import json
 from flask import redirect
 import pagination
 import email_module
+import endorsements
 
 app.debug = True
 app.secret_key = 'iLoveHelloKitty'
@@ -25,6 +26,32 @@ def url_for_other_page(page, mentee_topic_choice):
     return url_for(request.endpoint, **args)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
+# LOGIN Pages
+@app.route('/login')
+def login():
+    return linkedin.linkedin.authorize(callback=url_for('get_linkedin_data', _external=True))
+
+@app.route('/logout')
+def logout():
+    session.pop('linkedin_token', None)
+    return redirect(url_for('index'))
+
+@app.route('/login/authorized')
+@linkedin.linkedin.authorized_handler
+def get_linkedin_data(resp):    
+
+    user_json = linkedin.authorized(resp)
+    user_json = user_json.data
+    user_string = json.loads(user_json)
+
+    user = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=user_string["id"]).first()
+    if user and user.new_user:
+        return redirect(url_for('addinfo_page'))
+    # print linkedin.authorize(callback=url_for('authorized', _external=True))
+
+    return redirect(url_for('index'))
+
+# HOME & ACCOUNT CREATION Pages
 @app.route('/')
 def homepage():
     return render_template('home_page.html')
@@ -55,29 +82,6 @@ def addinfo():
     # current_user = tabledef.dbsession.query(tabledef.User).filter_by(linkedintoken=session['linkedin_token']).first()
     return redirect(url_for('index'))
 
-@app.route('/login')
-def login():
-    return linkedin.linkedin.authorize(callback=url_for('get_linkedin_data', _external=True))
-
-@app.route('/logout')
-def logout():
-    session.pop('linkedin_token', None)
-    return redirect(url_for('index'))
-
-@app.route('/login/authorized')
-@linkedin.linkedin.authorized_handler
-def get_linkedin_data(resp):    
-
-    user_json = linkedin.authorized(resp)
-    user_json = user_json.data
-    user_string = json.loads(user_json)
-
-    user = tabledef.dbsession.query(tabledef.User).filter_by(linkedin_id=user_string["id"]).first()
-    if user and user.new_user:
-        return redirect(url_for('addinfo_page'))
-    # print linkedin.authorize(callback=url_for('authorized', _external=True))
-
-    return redirect(url_for('index'))
 
 @app.route('/home', defaults={'page': 1}, methods=["POST"])
 @app.route('/home/page/<int:page>/<mentee_topic_choice>')
@@ -99,12 +103,32 @@ def search_results(page, mentee_topic_choice = None):
     return render_template('searchresults.html', search_topic_display=search_topic, 
         pagination=pagination_per_page, users=users, mentee_topic_choice=mentee_topic_choice)
 
-
+# MENTOR DETAIL PAGES
 @app.route('/mentor_detail/<linkedin_id>', methods=["GET"])
 def mentor_page(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
-    return render_template('mentor_detail.html', ment_data=ment_data)
+    user_data = search.mentor_detail_display(session['linkedin_id'])
+    endorsement_history = endorsements.get_endorsement_info_per_mentor(linkedin_id)
+    return render_template('mentor_detail.html', ment_data=ment_data, user_data=user_data, endorsement_history=endorsement_history)
 
+@app.route('/mentor_detail', methods=["POST"])
+def add_endorsement():
+    sender = session['linkedin_id']
+    sender_data= search.mentor_detail_display(sender)
+
+    mentor = request.form.get('mentor_id')
+    print "~~~~~~~~~~~~~~~~MENTOR ID on main"
+    print mentor
+    mentor_data = search.mentor_detail_display(mentor)
+
+    endorsement_title = request.form.get('endorsement_title')
+    endorsement_body = request.form.get('endorsement_txt')
+
+    endorsements.save_endorsement_info_to_database(sender, mentor, endorsement_title, endorsement_body)
+
+    return redirect(url_for('mentor_page', linkedin_id=mentor))
+
+# SELF PROFILE PAGES
 @app.route('/profile', methods=["GET"])
 def self_page():
     print "~!~!~!~!~ session linkedin_id"

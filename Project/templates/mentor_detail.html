@@ -16,7 +16,13 @@
       <div class="col-md-1 column">
       </div>
       <div class="col-md-2 brd">
-         <div class="center-block placeholder"><img alt="140x140" src="{{ment_data.picture_url}}"/></div>
+         <div class="center-block placeholder">
+            {% if ment_data.picture_url != None %}
+            <img alt="140x140" src="{{ment_data.picture_url}}"/>
+            {% else %}
+            <img alt="130x130" src="http://pipsum.com/130x130.jpg"/>
+            {% endif %}
+         </div>
       </div>
       <div class="col-md-4 column">
          <blockquote>
@@ -44,7 +50,11 @@
    <div class="col-sm-12" contenteditable="false" style="">
       <div class="panel panel-default">
          <div class="panel-heading">{{ment_data.first_name}}'s Bio</div>
+         {% if ment_data.summary != None %}
          <div class="panel-body"> {{ment_data.summary}}
+         {% else %}
+         <div class="panel-body"> This data is pulled from your Linkedin Profile. Please update your Linkedin Profile under "Background" -> "Add a Summary".
+         {% endif %}
          </div>
       </div>
    </div>
@@ -114,19 +124,52 @@
                   <div class="panel-heading">My Endorsements:</div>
                   <div class="panel-body">
                      <ul class="media-list">
+                        {% for endorsements in endorsement_history %}
                         <li class="media">
-                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
+                           <a class="pull-left" href="#">
+                              {% if endorsements.sender.picture_url != None %}
+                              <img class="media-object" src="{{endorsements.sender.picture_url}}">
+                              {% else %}
+                              <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
+                              {% endif %}
+                           </a>
                            <div class="media-body">
-                              <h4 class="media-heading">Media heading</h4>
-                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </p>
+                              <h4 class="media-heading">{{endorsements.title}}</h4>
+                              <p>{{endorsements.endorsements_text}}</p>
                            </div>
                         </li>
-                        <li class="media">
-                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
-                           <div class="media-body">
-                              <h4 class="media-heading">Media heading</h4>
-                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.</p>
-                           </div>
+                        <br>
+                        {% endfor %}
+                        <form method="POST" action="/mentor_detail">
+                           <li class="media">
+                              <a class="pull-left" href="/mentor_detail/{{user_data.linkedin_id}}">
+                                 {% if user_data.picture_url != None %}
+                                 <img class="media-object" alt="140x140" src="{{user_data.picture_url}}">
+                                 {% else %}
+                                 <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
+                                 {% endif %}
+                              </a>
+                              <div class="media-body">
+                                 <div class="form-group">
+                                    <label for="endorsement_title">
+                                    Title:</label>
+                                    <input type="text" id="endorsement_title" name="endorsement_title"class="form-control" placeholder="Please enter an endorsement title">
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="endorsement_txt">
+                                    Endorsement:</label>
+                                    <textarea name="endorsement_txt" id="endorsement_txt" class="form-control" rows="2" style="width:100%"
+                                       placeholder="Please enter an endorsement here"></textarea>
+                                 </div>
+                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                       <button type="submit" class="btn btn-primary pull-right" id="btnEmail">
+                                       Submit</button>
+                                    </div>
+                                 </div>
+                                 <input type = "hidden" name="mentor_id" value="{{ment_data.linkedin_id}}"/>
+                        </form>
+                        </div>
                         </li>
                      </ul>
                   </div>

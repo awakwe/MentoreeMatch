@@ -21,8 +21,8 @@ def send_email(sender_email, mentor_email, subject, subject_body):
     return requests.post(
         "https://api.mailgun.net/v2/app27934969.mailgun.org/messages",
         auth=("api", "key-21q1narswc35vqr1u3f9upn3vf6ncbb9"),
-        data={"from": mentor_email,
-              "to": sender_email,
+        data={"from": sender_email,
+              "to": mentor_email,
               "subject": subject,
               "text": subject_body})
 

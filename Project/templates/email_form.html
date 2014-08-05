@@ -13,7 +13,13 @@
                   <div class="row">
                      <div class="col-sm-12 col-lg-12">
                         <div class="col-sm-1 column">
-                           <div class="center-block placeholder"><img alt="140x140" src="{{ment_data.picture_url}}"/></div>
+                           <div class="center-block placeholder">
+                              {% if ment_data.picture_url != None %}
+                              <img alt="140x140" src="{{ment_data.picture_url}}"/>
+                              {% else %}
+                              <img alt="140x140" src="http://pipsum.com/140x140.jpg"/>
+                              {% endif %}
+                              </div>
                         </div>
                         <div class="col-sm-11 column">
                            <h1 class="h1" style="text-align: center">

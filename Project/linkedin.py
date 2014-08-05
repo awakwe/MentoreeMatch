@@ -86,7 +86,6 @@ def update_additional_user_data(mentoree_choice, age_range, gender_input, descri
     current_selected_topics = tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(mentor_id=session['linkedin_id']).all()
     for curr_topics in current_selected_topics:
         tabledef.dbsession.delete(curr_topics)
-
     # pdb.set_trace()
     for topics in mentor_topics:
         mentor_selected_topics = tabledef.MentoreeTopic(topic_id = topics, mentor_id=session['linkedin_id'])
