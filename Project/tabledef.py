@@ -196,6 +196,7 @@ class Endorsement(Base):
     receiver_id = Column(String(50), ForeignKey('users.linkedin_id'), nullable = False)
     title = Column(String(100), nullable=True)
     endorsements_text = Column(String(500), nullable=True)
+    sent_date = Column(DateTime, nullable=True)
 
     sender = relationship("User", primaryjoin="User.linkedin_id==Endorsement.sender_id")
     receiver = relationship("User", primaryjoin="User.linkedin_id==Endorsement.receiver_id")

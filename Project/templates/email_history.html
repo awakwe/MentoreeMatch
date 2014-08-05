@@ -111,8 +111,23 @@
             '</div>'+
             '</div>'+
                      '<div class="form-group">\
-                     <a class="btn btn-primary btn-large pull-right" href="/email/'+result.sender_id+'">Reply</a>\
-                              </div>')
+                     <a class="btn btn-primary btn-large pull-right" style="margin-left: 20px;" href="/email/'+result.sender_id+'">Reply</a>\
+                     <a id="delete_email" class="btn btn-primary btn-large pull-right" href="/delete_email/'+result.id+'">Delete</a>\
+                              </div>'
+                              );
+
+            $("#delete_email").click(function(e){
+               e.preventDefault();
+               var href = $(this).attr('href');
+               console.log("delete email!", href);
+               $.ajax(href).done(function(res_server){
+                  if (res_server == 'error'){
+                     return;
+                  }
+                  $(".email_contents").html('<img src="static/img/mentor_logo_grey.png" class="img-responsive center-block">');
+                  $('tr[id='+res_server+']').remove();
+               });
+            });
             });
             });
             });

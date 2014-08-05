@@ -51,7 +51,10 @@ def format_json(row):
         formatted_json_dict[column.name] = str(getattr(row, column.name))
     return formatted_json_dict
 
-
+def delete_email(id):
+    deleted_email=tabledef.dbsession.query(Email).filter_by(id=id).first()
+    tabledef.dbsession.delete(deleted_email)
+    tabledef.dbsession.commit()
 #     return requests.post(
 #         "https://api.mailgun.net/v2/app27934969.mailgun.org/messages",
 #         auth=("api", "key-21q1narswc35vqr1u3f9upn3vf6ncbb9"),

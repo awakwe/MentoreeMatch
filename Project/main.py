@@ -140,9 +140,6 @@ def email_get(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
     user_data = search.mentor_detail_display(session['linkedin_id'])
     email_history = email_module.get_email_history_per_mentor(linkedin_id)
-    print "email GET ^^^^^^^^^^^^^^^^^^"
-    print ment_data
-    print user_data
     return render_template('email_form.html', ment_data=ment_data, user_data=user_data, email_history=email_history)
 
 @app.route('/email', methods=["POST"])
@@ -152,8 +149,6 @@ def email_post():
     sender_email = sender_data.email
 
     mentor = request.form.get('mentor_id')
-    print "mentor"
-    print mentor
     mentor_data = search.mentor_detail_display(mentor)
     mentor_email = mentor_data.email
 
@@ -172,8 +167,6 @@ def email_post():
 def email_history():
     user_data = search.mentor_detail_display(session['linkedin_id'])
     email_history = email_module.get_email_history()
-    print "!@#$%^&*()_+ EMAIL HISTORY on main"
-    print email_history
     return render_template('email_history.html', user_data=user_data, email_history=email_history)
 
 @app.route('/email_detail/<email_id>', methods=["GET"])
@@ -192,7 +185,13 @@ def email_detail(email_id):
     email_selected["sender"]["last_name"] = eid.sender.last_name
 
     return json.dumps(email_selected)
-    #return jsonify(**email_module.format_json(email_selected))
+
+@app.route('/delete_email/<int:id>', methods=["GET"])
+def delete_email(id):
+    if 'linkedin_id' not in session:
+        return 'error'
+    email_module.delete_email(id)
+    return str(id)
 
 
    
