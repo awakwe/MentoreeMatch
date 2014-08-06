@@ -51,7 +51,11 @@
    <div class="col-sm-12" contenteditable="false" style="">
       <div class="panel panel-default">
          <div class="panel-heading">{{ment_data.first_name}}'s Bio</div>
+         {% if ment_data.summary != None %}
          <div class="panel-body"> {{ment_data.summary}}
+         {% else %}
+         <div class="panel-body"> <h4><small>This data is pulled from your Linkedin Profile. Please update your Linkedin Profile under "Background" -> "Add a Summary".</h4></small>
+         {% endif %}
          </div>
       </div>
    </div>

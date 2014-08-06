@@ -138,13 +138,6 @@ def self_page():
         return render_template('self_profile.html', ment_data=ment_data, profile_endorsement_hist=profile_endorsement_hist)
     return redirect(url_for('login'))
 
-# @app.route('/profile', methods=["POST"])
-# def self_page_endorsement_post():
-#     if 'linkedin_id' in session:
-#         profile_endorsement_hist = endorsements.get_endorsement_info_for_self(session['linkedin_id'])
-#         return redirect(url_for("self_page", profile_endorsement_hist=profile_endorsement_hist)
-#     return redirect(url_for('login'))
-
 @app.route('/edit_profile', methods=["GET"])
 def mentor_page_update():
     if 'linkedin_id' in session:
