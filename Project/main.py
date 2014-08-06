@@ -109,6 +109,7 @@ def mentor_page(linkedin_id):
     ment_data = search.mentor_detail_display(linkedin_id)
     user_data = search.mentor_detail_display(session['linkedin_id'])
     endorsement_history = endorsements.get_endorsement_info_per_mentor(linkedin_id)
+
     return render_template('mentor_detail.html', ment_data=ment_data, user_data=user_data, endorsement_history=endorsement_history)
 
 @app.route('/mentor_detail', methods=["POST"])
@@ -131,12 +132,18 @@ def add_endorsement():
 # SELF PROFILE PAGES
 @app.route('/profile', methods=["GET"])
 def self_page():
-    print "~!~!~!~!~ session linkedin_id"
-    print session['linkedin_id'] 
     if 'linkedin_id' in session:
         ment_data = search.mentor_detail_display(session['linkedin_id'])
-        return render_template('self_profile.html', ment_data=ment_data)
+        profile_endorsement_hist = endorsements.get_endorsement_info_for_self()
+        return render_template('self_profile.html', ment_data=ment_data, profile_endorsement_hist=profile_endorsement_hist)
     return redirect(url_for('login'))
+
+# @app.route('/profile', methods=["POST"])
+# def self_page_endorsement_post():
+#     if 'linkedin_id' in session:
+#         profile_endorsement_hist = endorsements.get_endorsement_info_for_self(session['linkedin_id'])
+#         return redirect(url_for("self_page", profile_endorsement_hist=profile_endorsement_hist)
+#     return redirect(url_for('login'))
 
 @app.route('/edit_profile', methods=["GET"])
 def mentor_page_update():

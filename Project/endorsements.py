@@ -18,8 +18,14 @@ def save_endorsement_info_to_database(sender, mentor, endorsement_title, endorse
 
 def get_endorsement_info_per_mentor(linkedin_id):
     endorsement_hist = tabledef.dbsession.query(Endorsement).filter_by(receiver_id=linkedin_id).all()
-    for endorsements in endorsement_hist:
-        print "!^^^^^^^^^^^^^^^^endorsement history!! ^^^^^^^^^^^^^^^^^^^^^"
-        print endorsements.sender.picture_url
+    # for endorsements in endorsement_hist:
+    #     print "!^^^^^^^^^^^^^^^^endorsement history!! ^^^^^^^^^^^^^^^^^^^^^"
+    #     print endorsements.sender.picture_url
     return endorsement_hist
 
+def get_endorsement_info_for_self():
+    profile_endorsement_hist = tabledef.dbsession.query(Endorsement).filter_by(receiver_id=session['linkedin_id']).all()
+    for endorsements in profile_endorsement_hist:
+        print "!^^^^^^^^^^^^^^^^endorsements_text!!^^^^^^^^^^^^^^^^"
+        print endorsements.endorsements_text
+    return profile_endorsement_hist

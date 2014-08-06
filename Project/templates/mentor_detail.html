@@ -20,7 +20,7 @@
             {% if ment_data.picture_url != None %}
             <img alt="140x140" src="{{ment_data.picture_url}}"/>
             {% else %}
-            <img alt="130x130" src="http://pipsum.com/130x130.jpg"/>
+            <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
             {% endif %}
          </div>
       </div>
@@ -126,14 +126,17 @@
                      <ul class="media-list">
                         {% for endorsements in endorsement_history %}
                         <li class="media">
-                           <a class="pull-left" href="#">
+                           <a class="pull-left" href="/mentor_detail/{{endorsements.sender.linkedin_id}}">
                               {% if endorsements.sender.picture_url != None %}
                               <img class="media-object" src="{{endorsements.sender.picture_url}}">
                               {% else %}
-                              <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
+                              <img alt="80x80" src="http://pipsum.com/80x80.jpg"/>
                               {% endif %}
                            </a>
                            <div class="media-body">
+                              <a href="/mentor_detail/{{endorsements.sender.linkedin_id}}">
+                              <h2 class="media-heading"><small>{{endorsements.sender.first_name}}&nbsp;{{endorsements.sender.last_name}}</small></h2></a>
+                              <h4 class="media-heading text-right"><small>{{endorsements.sent_date.strftime('%m/%d/%Y')}}</small></h4>
                               <h4 class="media-heading">{{endorsements.title}}</h4>
                               <p>{{endorsements.endorsements_text}}</p>
                            </div>
@@ -146,7 +149,7 @@
                                  {% if user_data.picture_url != None %}
                                  <img class="media-object" alt="140x140" src="{{user_data.picture_url}}">
                                  {% else %}
-                                 <img alt="110x110" src="http://pipsum.com/110x110.jpg"/>
+                                 <img alt="80x80" src="http://pipsum.com/80x80.jpg"/>
                                  {% endif %}
                               </a>
                               <div class="media-body">

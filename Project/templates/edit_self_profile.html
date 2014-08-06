@@ -102,7 +102,11 @@
          </div>
       </form>
       <script>
-         
+         $(document).ready(function (){
+         $("#myTab .active").removeClass("active");
+         $("#myTab .profile").addClass("active");
+         });
+
          $("select option").each(function(){
          if ($(this).text() == "{{ment_data.age|safe}}")
             $(this).attr("selected","selected");
@@ -115,9 +119,7 @@
                break;
          }
          };
-         
-         
-         
+          
       </script>
    </body>
 </html>

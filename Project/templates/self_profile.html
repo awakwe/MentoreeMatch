@@ -127,20 +127,25 @@
                   <div class="panel-heading">My Endorsements:</div>
                   <div class="panel-body">
                      <ul class="media-list">
+                        {% for endorsements in profile_endorsement_hist %}
                         <li class="media">
-                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
+                           <a class="pull-left" href="/mentor_detail/{{endorsements.sender.linkedin_id}}">
+                              {% if endorsements.sender.picture_url != None %}
+                              <img class="media-object" src="{{endorsements.sender.picture_url}}">
+                              {% else %}
+                              <img alt="80x80" src="http://pipsum.com/80x80.jpg"/>
+                              {% endif %}
+                           </a>
                            <div class="media-body">
-                              <h4 class="media-heading">Media heading</h4>
-                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </p>
+                              <a href="/mentor_detail/{{endorsements.sender.linkedin_id}}">
+                              <h2 class="media-heading"><small>{{endorsements.sender.first_name}}&nbsp;{{endorsements.sender.last_name}}</small></h2></a>
+                              <h4 class="media-heading text-right"><small>{{endorsements.sent_date.strftime('%m/%d/%Y')}}</small></h4>
+                              <h4 class="media-heading">{{endorsements.title}}</h4>
+                              <p>{{endorsements.endorsements_text}}</p>
                            </div>
                         </li>
-                        <li class="media">
-                           <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64"></a>
-                           <div class="media-body">
-                              <h4 class="media-heading">Media heading</h4>
-                              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.</p>
-                           </div>
-                        </li>
+                        <br>
+                        {% endfor %}
                      </ul>
                   </div>
                </div>

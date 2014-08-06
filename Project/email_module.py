@@ -28,9 +28,6 @@ def send_email(sender_email, mentor_email, subject, subject_body):
 
 def get_email_history_per_mentor(linkedin_id):
     email_hist = tabledef.dbsession.query(Email).filter_by(sender_id=session['linkedin_id']).filter_by(receiver_id=linkedin_id).all()
-    # for mail in email_hist:
-    #     print "~!@#$%^&*( email history!! !@#$%^&"
-    #     print mail.subject
     return email_hist
 
 def get_email_history():

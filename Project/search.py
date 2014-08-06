@@ -15,8 +15,6 @@ def search(searchtopics):
 def search_topic_display(searchtopics):
 	search_results=tabledef.dbsession.query(tabledef.MentoreeTopic).filter_by(topic_id=searchtopics).all()
 	search_topic = tabledef.dbsession.query(tabledef.Topic).filter_by(topic_id=search_results[0].topic_id).first()
-	# print search_topic
-	# print "=^.^= meeeeoow! search topic"
 
 	search_topic_title = search_topic.title
 	print search_topic_title
