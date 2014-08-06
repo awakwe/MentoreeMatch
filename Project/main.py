@@ -87,21 +87,26 @@ def addinfo():
 @app.route('/home/page/<int:page>/<mentee_topic_choice>')
 def search_results(page, mentee_topic_choice = None):
     mentee_topic_choice = mentee_topic_choice or request.form.get('searchtopics')
+    print "~~~~~~~~~~~~~~~~mentee_topic_choice"
+    print mentee_topic_choice
     mentor_data = search.search(mentee_topic_choice)
+    if mentor_data:
 
-    start_index = (page - 1) * (PER_PAGE)
-    end_index = (page) * (PER_PAGE)
+        start_index = (page - 1) * (PER_PAGE)
+        end_index = (page) * (PER_PAGE)
 
-    ment_count = len(mentor_data)
-    users = mentor_data[start_index:end_index]
-    # users = mentor_data.paginate(page, PER_PAGE, False)
+        ment_count = len(mentor_data)
+        users = mentor_data[start_index:end_index]
+        # users = mentor_data.paginate(page, PER_PAGE, False)
 
-    if not users and page != 1:
-        abort(404)
-    pagination_per_page = pagination.Pagination(page, PER_PAGE, ment_count)
-    search_topic = search.search_topic_display(mentee_topic_choice)
-    return render_template('searchresults.html', search_topic_display=search_topic, 
-        pagination=pagination_per_page, users=users, mentee_topic_choice=mentee_topic_choice)
+        if not users and page != 1:
+            abort(404)
+        pagination_per_page = pagination.Pagination(page, PER_PAGE, ment_count)
+        search_topic = search.search_topic_display(mentee_topic_choice)
+        return render_template('searchresults.html', search_topic_display=search_topic, 
+            pagination=pagination_per_page, users=users, mentee_topic_choice=mentee_topic_choice)
+    messages = flash('Sorry! There are no mentors under this search topic')
+    return redirect(url_for('index'))
 
 # MENTOR DETAIL PAGES
 @app.route('/mentor_detail/<linkedin_id>', methods=["GET"])
