@@ -198,6 +198,12 @@ def email_history():
     email_history = email_module.get_email_history()
     return render_template('email_history.html', user_data=user_data, email_history=email_history)
 
+@app.route('/email_sent_history', methods=["GET"])
+def email_sent_history():
+    user_data = search.mentor_detail_display(session['linkedin_id'])
+    email_history = email_module.get_sent_email_history_per_sender()
+    return render_template('email_sent_history.html', user_data=user_data, email_history=email_history)
+
 @app.route('/email_detail/<email_id>', methods=["GET"])
 def email_detail(email_id):
     eid = email_module.get_email_with_id(email_id)

@@ -30,6 +30,10 @@ def get_email_history_per_mentor(linkedin_id):
     email_hist = tabledef.dbsession.query(Email).filter_by(sender_id=session['linkedin_id']).filter_by(receiver_id=linkedin_id).all()
     return email_hist
 
+def get_sent_email_history_per_sender():
+    email_hist = tabledef.dbsession.query(Email).filter_by(sender_id=session['linkedin_id']).all()
+    return email_hist
+
 def get_email_history():
     email_hist = tabledef.dbsession.query(Email).filter_by(receiver_id=session['linkedin_id']).all()
     for mail in email_hist:
