@@ -151,6 +151,115 @@ def import_linkedin_user(data):
 
     return user
 
+def update_linkedin_user(data):
+    user = dbsession.query(tabledef.User).filter_by(linkedin_id=session['linkedin_id']).first();
+    # parsing siteStandardProfileRequest to get authToken
+    user.linkedin_id = data.get('id',None)
+    user.new_user = True
+    token = data.get('siteStandardProfileRequest', None)
+    if token != None:
+        token_data = token['url']
+        start = token_data.find('authToken=')+10
+        end = token_data.find('=api', start)
+        user.linkedintoken = token_data[start:end]
+
+    user.first_name = data.get('firstName', None)
+    user.last_name = data.get('lastName', None)
+    user.email = data.get('emailAddress', None)
+    user.industry = data.get('industry', None)
+    user.headline = data.get('headline',None)
+
+    
+    educations = data.get('educations',None)
+    education_models = []
+    # pdb.set_trace()
+    ed_values = educations.get('values',None)
+    if ed_values != None:
+        for entry in ed_values:
+            education = Education()
+            education.linkedin_id = user.linkedin_id
+            if 'startDate' in entry:
+                edstartyear = entry['startDate']['year']
+                # print edstartyear
+                education.educations_start_year = edstartyear
+            if 'endDate' in entry:
+                edendyear = entry['endDate']['year']
+                # print edendyear
+                education.educations_end_year = edendyear
+            if 'schoolName' in entry:
+                schlname = entry['schoolName']
+                # print schlname
+                education.educations_school_name = schlname
+            if 'fieldOfStudy' in entry:
+                edfield = entry['fieldOfStudy']
+                # print edfield
+                education.educations_field_of_study = edfield
+            if 'degree' in entry:
+                eddegree = entry['degree']
+                # print eddegree
+                education.educations_degree = eddegree
+            education_models.append(education)
+
+    positions = data.get('positions',None)
+    position_models = []
+    pos_values = positions.get('values',None)
+    if pos_values != None:
+        for entry in pos_values:
+            position = Position()
+            position.linkedin_id = user.linkedin_id
+            if 'startDate' in entry:
+                posstartyear = entry['startDate']['year']
+                # print posstartyear
+                position.positions_start_year = posstartyear
+            if 'endDate' in entry:
+                posendyear = entry['endDate']['year']
+                # print posendyear
+                position.positions_end_year = posendyear
+            if 'title' in entry:
+                postitle = entry['title']
+                # print postitle
+                position.positions_title = postitle
+            if 'company' in entry:
+                co_entry = entry['company']
+                if 'name' in co_entry:
+                    print "~~~~~~~~~~~~~~~~~~~~~~ company name"
+                    print entry
+                    print entry['company']
+                    coname = entry['company']['name']
+                    print coname
+                    position.positions_company_name = coname
+            position_models.append(position)
+
+    cert = data.get('certifications',None)
+    if cert != None:
+        cert_name = cert['values'][0]['name']
+        user.certifications = cert_name
+
+    mentor_topics = MentoreeTopic()
+    mentor_topics.linkedin_id = user.linkedin_id
+
+    user.summary = data.get('summary',None)
+    user.picture_url = data.get('pictureUrl', None)
+
+    current_user_id = user.linkedin_id
+    # print "~~!!^_^!!~~"
+    existing_user = dbsession.query(User).filter_by(linkedin_id = current_user_id).first()
+    if existing_user == None:
+        dbsession.add(user)
+        dbsession.add(mentor_topics)
+
+        for model in education_models:
+            # print "model"
+            # print model
+            dbsession.add(model)
+
+        for models in position_models:
+            dbsession.add(models)
+
+        dbsession.commit()
+
+    return user
+
 class Education(Base):
     __tablename__="educations"
     id = Column(Integer, primary_key=True)

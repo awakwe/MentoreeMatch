@@ -48,9 +48,6 @@ def authorized(resp):
 def get_linkedin_oauth_token():
     return session.get('linkedin_token')
 
-# def get_linkedin_id():
-#     return session.get('linkedin_id')
-
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
     headers['x-li-format'] = 'json'
