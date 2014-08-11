@@ -64,9 +64,11 @@
       <div class="panel-body"> "{{ment_data.description}}"
       </div>
    </div>
+   <br>
    <div class="section subsection-reorder" id="profile-experience" style="display:block">
    <div class="header">
-      <h2>Experience</h2>
+      <h1><small>Experience</small></h1>
+      <hr style ="border-width: 3px" width="60%" align=left>
    </div>
    <div class="content vcalendar">
       <div>
@@ -94,9 +96,11 @@
             </div>
             {% endfor %}
             {% endif %}
+            <br>
             <div id="background-education-container" class="background-section" data-li-template="education_section">
                <div id="background-education" class="background-education edit-default">
-                  <h2>Education</h2>
+                  <h1><small>Education</small></h1>
+                  <hr style ="border-width: 3px" width="60%" align=left>
                   {% if ment_data.educations|length > 0 %}
                   {% for edu in ment_data.educations %}
                   <div id="education" class="editable-item section-item">
