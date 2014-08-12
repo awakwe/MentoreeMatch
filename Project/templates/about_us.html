@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+   {% if error %}
+   <h2> {{ error }} </h2>
+   {% else %}
+   <html>
+      <body>
+         <br>
+            <div class="jumbotron jumbotron-sm">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-sm-12 col-lg-12">
+                        <div class="col-sm-12 column">
+                           <h1 class="h1" style="text-align: center">
+                              About Us
+                           </h1>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="container">
+   <div class="row clearfix">
+      <div class="col-md-12 column">
+         <h2>
+            Thank you for visiting Mentoree Match!
+         </h2>
+         <p>
+            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+         </p>
+      </div>
+   </div>
+</div>
+         <script>
+            $(document).ready(function (){
+               $("#myTab .active").removeClass("active");
+               $("#myTab .about").addClass("active");
+            });
+
+         </script>
+         {% endif %}
+      </body>
+   </html>
+   {% endblock %}

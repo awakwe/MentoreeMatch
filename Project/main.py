@@ -236,5 +236,9 @@ def delete_email(id):
     email_module.delete_email(id)
     return str(id)
 
+@app.route('/about', methods=["GET"])
+def about_us():
+    return render_template('about_us.html')
+
 
    
